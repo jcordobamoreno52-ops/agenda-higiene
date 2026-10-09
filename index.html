@@ -1,3 +1,12 @@
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<link rel="manifest" href="manifest.json">
+<link rel="icon" type="image/png" href="favicon.png">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<meta name="theme-color" content="#0B4F7C">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="Agenda Higiene">
 <title>Agenda Higiene 2026</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -44,6 +53,14 @@ h1,h2,h3{font-family:var(--f-display);margin:0;line-height:1.15;text-wrap:balanc
 .top-in{max-width:1400px;margin:0 auto;padding:12px 16px;display:grid;gap:10px}
 .r1{display:flex;flex-wrap:wrap;gap:10px 16px;align-items:center;justify-content:space-between}
 .r1 h1{font-size:1.4rem;font-weight:800}
+.brand{display:flex;align-items:center;gap:10px}
+.bmark{width:46px;height:46px;border-radius:12px;object-fit:contain;background:#fff;box-shadow:0 2px 8px rgba(11,79,124,.15)}
+.btxt{display:grid;line-height:1.05}
+.bname{font-size:1.45rem;font-weight:800;letter-spacing:-.01em}
+.b1{color:#0B4F7C}.b2{color:#7FAE1C}
+.bsub{font-family:var(--f-body);font-size:.74rem;font-weight:700;color:var(--muted);letter-spacing:.08em;text-transform:uppercase;margin-top:3px}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]) .b1{color:#6DB8F2}:root:not([data-theme="light"]) .b2{color:#A6D447}}
+:root[data-theme="dark"] .b1{color:#6DB8F2}:root[data-theme="dark"] .b2{color:#A6D447}
 .r1 h1 small{font-family:var(--f-body);font-size:.78rem;font-weight:700;color:var(--accent);background:var(--accent-soft);border-radius:999px;padding:.1rem .55rem;margin-left:8px;vertical-align:3px}
 .seg{display:inline-flex;background:var(--surface);border:1px solid var(--line);border-radius:999px;padding:4px;gap:2px;flex-wrap:wrap}
 .seg button{border:0;background:none;border-radius:999px;padding:.38rem .95rem;font-weight:700;color:var(--muted)}
@@ -266,7 +283,7 @@ h1,h2,h3{font-family:var(--f-display);margin:0;line-height:1.15;text-wrap:balanc
 <header class="top">
   <div class="top-in">
     <div class="r1">
-      <h1>Agenda Higiene <small>2026 · prueba</small></h1>
+      <h1 class="brand"><img src="icon-192.png" alt="" class="bmark" onerror="this.remove()"><span class="btxt"><span class="bname"><span class="b1">Agenda</span> <span class="b2">Higiene</span></span><span class="bsub">Conhintec · 2026</span></span></h1>
       <div class="seg" role="group" aria-label="Vista" id="views"></div>
     </div>
     <div class="r2">
@@ -824,7 +841,7 @@ function subscribe(){
 function loginScreen(msg){const m=$('main');m.innerHTML='';$('nav').innerHTML='';
   const em=h('input',{type:'email',id:'lg-email',placeholder:'Correo',autocomplete:'username'}),pw=h('input',{type:'password',id:'lg-pass',placeholder:'Contraseña',autocomplete:'current-password'});
   const go=async ev=>{ev&&ev.preventDefault();const {data,error}=await sb.auth.signInWithPassword({email:em.value.trim(),password:pw.value});if(error){loginScreen('Correo o contraseña incorrectos.');return}ME=data.user;await startCloud()};
-  const f=h('form',{class:'login',onsubmit:go},h('h2',null,'Entrar a la agenda'),h('p',{class:'muted',style:'margin:0'},'Usa el correo y la contraseña que te dio la coordinación.'),msg?h('p',{style:'margin:0;color:var(--st-c);font-weight:600'},msg):null,em,pw,h('button',{class:'btn primary',type:'submit'},'Entrar'));
+  const f=h('form',{class:'login',onsubmit:go},h('img',{src:'logo.png',alt:'Agenda Higiene · Conhintec',style:'width:150px;height:150px;justify-self:center;object-fit:contain',onerror:"this.remove()"}),h('h2',null,'Entrar a la agenda'),h('p',{class:'muted',style:'margin:0'},'Usa el correo y la contraseña que te dio la coordinación.'),msg?h('p',{style:'margin:0;color:var(--st-c);font-weight:600'},msg):null,em,pw,h('button',{class:'btn primary',type:'submit'},'Entrar'));
   m.append(f);setTimeout(()=>em.focus(),50)}
 async function startCloud(){try{if(await cloudLoad()){subscribe();render()}}catch(e){console.error(e);$('main').innerHTML='';$('main').append(h('div',{class:'empty'},'No se pudo leer la base de datos. Revisa que las tablas estén creadas (archivo supabase.sql).'))}}
 async function bootCloud(){
