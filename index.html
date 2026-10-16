@@ -283,6 +283,7 @@ h1,h2,h3{font-family:var(--f-display);margin:0;line-height:1.15;text-wrap:balanc
 .pname:hover b,.pname:focus-visible b{text-decoration-color:currentColor;color:var(--accent)}
 .pname:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
 .ev[draggable=true]{cursor:grab}
+.ev.movable{-webkit-touch-callout:none;-webkit-user-select:none;user-select:none}
 .ev.dragging{opacity:.4}
 .ev.picked{outline:3px solid var(--accent);outline-offset:1px}
 .cell.dropok{background:var(--accent-soft)!important;box-shadow:inset 0 0 0 2px var(--accent)}
@@ -339,6 +340,58 @@ body.picking .cell.cando .add{opacity:0}
 .invt input[type=number]{width:5.5rem}
 .uadd{display:flex;gap:8px;flex-wrap:wrap;margin-top:10px;align-items:center}
 .uadd input{flex:1 1 220px;width:auto}.uadd select{width:auto}
+
+/* equipos: tarjetas y usabilidad */
+.eqhead{display:flex;flex-wrap:wrap;gap:10px 16px;align-items:flex-start;justify-content:space-between;margin-bottom:12px}
+.eqhead h3{margin:0}.eqhead .sub{margin:2px 0 0}
+.eqdays{display:flex;gap:4px;flex-wrap:wrap;background:var(--surface-2);border:1px solid var(--line);border-radius:12px;padding:3px}
+.eqdays button{border:0;background:none;border-radius:9px;padding:.3rem .6rem;display:grid;line-height:1.15;cursor:pointer;color:var(--muted);font-size:.8rem;text-align:center}
+.eqdays button b{color:var(--ink);font-size:.82rem}
+.eqdays button.hoy b{color:var(--accent)}
+.eqdays button[aria-selected="true"]{background:var(--accent);color:var(--accent-ink)}
+.eqdays button[aria-selected="true"] b{color:var(--accent-ink)}
+.eqcards{display:grid;grid-template-columns:repeat(auto-fill,minmax(140px,1fr));gap:10px}
+.eqcard{--c:var(--aus);--cs:var(--aus-soft);border:1px solid var(--line);background:var(--surface);border-radius:16px;padding:12px;display:grid;gap:6px;text-align:left;cursor:pointer;border-top:4px solid var(--c);font:inherit;color:var(--ink)}
+.eqcard.poco{--c:var(--st-g);--cs:var(--st-g-soft)}.eqcard.agot,.eqcard.over{--c:var(--st-c);--cs:var(--st-c-soft)}.eqcard.cero{--c:var(--past);--cs:var(--past-soft);opacity:.8}
+.eqcard[aria-pressed="true"]{outline:2px solid var(--accent);outline-offset:2px}
+.eqtop{display:flex;align-items:center;gap:8px;min-width:0}
+.eqico{width:34px;height:34px;flex-shrink:0;display:inline-grid;color:var(--accent);background:var(--accent-soft);border-radius:10px;padding:6px}
+.eqico.mini{width:20px;height:20px;padding:3px;border-radius:6px}
+.eqn{font-weight:700;font-size:.86rem;line-height:1.2}
+.eqnum{display:flex;align-items:baseline;gap:6px}
+.eqnum b{font-family:var(--f-display);font-size:2.4rem;line-height:1;color:var(--c)}
+.eqnum span{color:var(--muted);font-weight:600}
+.eqst{justify-self:start;font-size:.74rem;font-weight:700;padding:.12rem .55rem;border-radius:999px;background:var(--cs);color:var(--c)}
+.eqcard.ok .eqst{color:var(--ink)}
+.eqstrip{display:flex;gap:3px;margin-top:2px}
+.eqstrip span{flex:1;text-align:center;font-family:var(--f-mono);font-size:.72rem;font-weight:600;border-radius:6px;padding:2px 0;background:var(--aus-soft);display:grid;line-height:1.1}
+.eqstrip span i{font-style:normal;font-family:var(--f-body);font-size:.6rem;color:var(--muted);text-transform:uppercase}
+.eqstrip .poco{background:var(--st-g-soft)}.eqstrip .agot,.eqstrip .over{background:var(--st-c-soft)}.eqstrip .cero{background:var(--past-soft);color:var(--muted)}
+.eqstrip .sel{outline:1.5px solid var(--ink)}
+.eqlibres{display:flex;flex-wrap:wrap;gap:6px;align-items:center;margin-top:12px;font-size:.82rem}
+.eqchip{display:inline-flex;align-items:center;gap:5px;border:1px solid var(--line);border-radius:999px;padding:.15rem .55rem .15rem .2rem;background:var(--surface-2)}
+.ussum{display:flex;align-items:center;gap:16px;margin-bottom:14px;flex-wrap:wrap}
+.usring{--p:0;width:92px;height:92px;border-radius:50%;display:grid;place-content:center;text-align:center;background:radial-gradient(closest-side,var(--surface) 76%,transparent 77%),conic-gradient(var(--accent) calc(var(--p)*1%),var(--line) 0);flex-shrink:0}
+.usring b{font-family:var(--f-display);font-size:1.5rem;line-height:1}.usring span{font-size:.66rem;color:var(--muted)}
+.ussum p{margin:0;max-width:46ch}
+.uslist{display:grid;gap:10px}
+.usrow{display:grid;grid-template-columns:auto 1fr auto;gap:12px;align-items:center;padding:8px 10px;border:1px solid var(--line);border-radius:14px;background:var(--surface-2)}
+.usmid{min-width:0;display:grid;gap:4px}
+.ustit{display:flex;gap:8px;align-items:center;flex-wrap:wrap}
+.uschip{font-size:.7rem;font-weight:700;padding:.08rem .5rem;border-radius:999px}
+.uschip.alto{background:var(--st-c-soft);color:var(--st-c)}.uschip.medio{background:var(--st-g-soft);color:#9A6A00}.uschip.bajo{background:var(--aus-soft);color:var(--aus)}
+:root[data-theme="dark"] .uschip.medio{color:var(--st-g)}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]) .uschip.medio{color:var(--st-g)}}
+.usbar{height:12px;border-radius:6px;background:var(--line);overflow:hidden}
+.usbar i{display:block;height:100%;border-radius:6px;background:var(--aus)}
+.usbar i.medio{background:var(--st-g)}.usbar i.alto{background:var(--st-c)}
+.usfacts{display:flex;flex-wrap:wrap;gap:4px 14px;font-size:.86rem}.usfacts b{font-family:var(--f-display);font-size:1.05rem}
+@media (max-width:600px){.usrow{grid-template-columns:auto 1fr}.usmid{grid-column:1/-1;grid-row:2}.usrow>.eqico{grid-row:1;grid-column:1}.uspct{grid-row:1;grid-column:2;justify-self:end}}
+.usrng{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin:-2px 0 12px;font-size:.88rem}.usrng select{font:inherit;padding:.3rem .5rem;border:1px solid var(--line);border-radius:8px;background:var(--surface);color:var(--ink)}
+.uspct{font-family:var(--f-display);font-size:1.5rem;font-weight:700;min-width:3.2ch;text-align:right}
+.eqmore summary{cursor:pointer;display:flex;flex-wrap:wrap;gap:4px 12px;align-items:baseline;list-style:revert}
+.eqmore[open] summary{margin-bottom:10px}
+.eqmore summary .muted{font-size:.84rem}
 .weeks{display:flex;flex-wrap:wrap;gap:6px}
 .weeks label{display:inline-flex;gap:5px;align-items:center;border:1px solid var(--line);border-radius:999px;padding:.25rem .65rem;font-size:.82rem;background:var(--surface)}
 .weeks label.on{background:var(--accent-soft);border-color:var(--accent);font-weight:700}
@@ -613,7 +666,8 @@ function moveEvent(id,p,d){const e=events.find(x=>x.id===id);if(!e)return;if(e.p
   const conf=eqActive(e)&&e.eq?eqConflicts(e.eq,[d],new Set([e.id])):[];
   const go=()=>{if(conf.length)eqBlock(conf,w=>apply(w));else apply(null)};
   if(p!==e.p)confirmBox('¿Pasarle esta visita a '+(P(p)?.n||'otro profesional')+'?',(e.emp||'La actividad')+' · '+dlong(d)+'. '+(isCoord()?'':'Después solo '+(P(p)?.n||'esa persona')+' o la coordinación la pueden cambiar.'),'Pasar visita',go);else go()}
-function makeMovable(el,e){el.draggable=true;
+const TOUCH=(()=>{try{return matchMedia('(pointer:coarse)').matches||('ontouchstart' in window)}catch(x){return false}})();
+function makeMovable(el,e){el.classList.add('movable');if(!TOUCH)el.draggable=true;
   el.addEventListener('dragstart',ev=>{DRAG=e.id;try{ev.dataTransfer.setData('text/plain',e.id);ev.dataTransfer.effectAllowed='move'}catch(x){}setTimeout(()=>el.classList.add('dragging'),0)});
   el.addEventListener('dragend',()=>{DRAG=null;el.classList.remove('dragging');document.querySelectorAll('.cell.dropok').forEach(x=>x.classList.remove('dropok'))});
   let t=null,sx=0,sy=0;
@@ -855,15 +909,104 @@ function vProfile(m){
 }
 
 // ---------- EQUIPOS ----------
+// íconos de línea de cada equipo (mismo estilo de la imagen de distribución de Higiene Centro)
+const EQ_ICO={
+  BOM:'<rect x="4" y="8" width="11" height="11" rx="2.5"/><path d="M7 8V5h5v3"/><path d="M15 12h2.5a2 2 0 0 1 2 2v6"/><circle cx="9.5" cy="13.5" r="2"/>',
+  DOS:'<rect x="7" y="2.5" width="10" height="19" rx="2.5"/><rect x="9" y="5" width="6" height="5" rx="1"/><circle cx="12" cy="15.5" r="2.2"/>',
+  SON:'<circle cx="6" cy="12" r="2"/><path d="M10 8.5a5 5 0 0 1 0 7"/><path d="M13.5 6a8.5 8.5 0 0 1 0 12"/><path d="M17 3.5a12 12 0 0 1 0 17"/>',
+  LUX:'<circle cx="12" cy="12" r="4"/><path d="M12 2.5v2.5M12 19v2.5M2.5 12H5M19 12h2.5M5.3 5.3l1.8 1.8M16.9 16.9l1.8 1.8M5.3 18.7l1.8-1.8M16.9 7.1l1.8-1.8"/>',
+  TEM:'<path d="M14 14.6V5a2 2 0 0 0-4 0v9.6a4 4 0 1 0 4 0z"/><path d="M12 9v7"/>',
+  ANE:'<path d="M3 8h10a3 3 0 1 0-3-3"/><path d="M3 12h15a3 3 0 1 1-3 3"/><path d="M3 16h6"/>',
+  TER:'<path d="M12 3s-5.5 6.2-5.5 10.3a5.5 5.5 0 0 0 11 0C17.5 9.2 12 3 12 3z"/>',
+  SMB:'<path d="M8 13V5.5a1.5 1.5 0 0 1 3 0V11m0-6.5a1.5 1.5 0 0 1 3 0V11m0-5a1.5 1.5 0 0 1 3 0v8a6.5 6.5 0 0 1-6.5 6.5H10a5 5 0 0 1-4-2l-2.6-3.6a1.5 1.5 0 0 1 2.3-1.9L8 15"/>',
+  SCE:'<circle cx="12" cy="4.5" r="2"/><path d="M12 7v7M7 10.5h10M8.5 21l3.5-7 3.5 7"/>',
+  GAS:'<path d="M10 2.5h4V5h-4z"/><path d="M9 5h6a2 2 0 0 1 2 2v12.5a2 2 0 0 1-2 2H9a2 2 0 0 1-2-2V7a2 2 0 0 1 2-2z"/><path d="M7 11h10"/>',
+  TSI:'<circle cx="12" cy="12" r="2.2"/><circle cx="4.5" cy="6" r="1.6"/><circle cx="19.5" cy="6" r="1.6"/><circle cx="5" cy="18.5" r="1.6"/><circle cx="19" cy="18.5" r="1.6"/><path d="M10.3 10.6 5.8 7M13.7 10.6 18.2 7M10.4 13.5 6.3 17.4M13.6 13.5l4.1 3.9"/>',
+  PIS:'<rect x="9" y="2.5" width="6" height="11" rx="3"/><path d="M5.5 11a6.5 6.5 0 0 0 13 0M12 17.5v4"/>'
+};
+function eqIcon(k,cls){const s=h('span',{class:'eqico '+(cls||''),'aria-hidden':'true'});s.innerHTML='<svg viewBox="0 0 24 24" width="100%" height="100%" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">'+(EQ_ICO[k]||'<rect x="4" y="4" width="16" height="16" rx="3"/>')+'</svg>';return s}
+// uso real o estimado: si la visita no tiene equipos asignados, se estima por sus mediciones
+function eqNeed(k,d){let u=0,est=0;for(const e of events){if(e.d!==d||!eqActive(e))continue;if(e.eq)u+=+e.eq[k]||0;else if((e.med||[]).length){const n=+eqSuggest(e.med)[k]||0;u+=n;est+=n}}return {u,est}}
+const isWork=d=>{const wd=D(d).getDay();return wd>0&&wd<6&&!hol[d]};
+// usabilidad: equipo-días programados ÷ equipo-días disponibles en el periodo
+function eqUsab(k,days){let used=0,cap=0,ago=0,nd=0,est=0;
+  days.forEach(d=>{const cp=eqCap(k,d);if(cp==null||cp<=0)return;const r=eqNeed(k,d),u=r.u;est+=r.est;nd++;cap+=cp;used+=Math.min(u,cp);if(u>=cp)ago++});
+  return {used,cap,ago,nd,est,pct:cap?Math.round(used/cap*100):null,prom:nd?used/nd:0,tot:nd?cap/nd:0}}
+const usoNivel=p=>p>=70?['alto','Uso alto']:p>=35?['medio','Uso medio']:['bajo','Uso bajo'];
+
 function vEquip(m){
   const days=[0,1,2,3,4,5].map(i=>addD(UI.week,i));
-  navBar('Equipos',()=>setUI({week:addD(UI.week,-7)}),()=>setUI({week:addD(UI.week,7)}),()=>setUI({week:monday(TODAY)}),'Semana '+isoWeek(days[0])+' · '+D(days[0]).getDate()+' '+fmt(days[0],{month:'short'}).replace('.','')+' al '+D(days[5]).getDate()+' '+fmt(days[5],{month:'short'}).replace('.',''),{cur:days[0].slice(0,7),go:ym=>setUI({week:monday(firstWorkday(ym))})});
-  m.append(h('p',{class:'muted',style:'margin:0 0 12px;max-width:72ch'},'Equipos libres cada día en Higiene Centro. Se descuentan solos cuando alguien programa una visita y quedan libres de nuevo al día siguiente. Toca una casilla para ver quién los tiene.'));
+  navBar('Equipos',()=>setUI({week:addD(UI.week,-7),eqday:''}),()=>setUI({week:addD(UI.week,7),eqday:''}),()=>setUI({week:monday(TODAY),eqday:''}),'Semana '+isoWeek(days[0])+' · '+D(days[0]).getDate()+' '+fmt(days[0],{month:'short'}).replace('.','')+' al '+D(days[5]).getDate()+' '+fmt(days[5],{month:'short'}).replace('.',''),{cur:days[0].slice(0,7),go:ym=>setUI({week:monday(firstWorkday(ym)),eqday:''})});
   const sinEq=events.filter(e=>e.d>=TODAY&&eqActive(e)&&!e.eq&&(e.med||[]).length);
   if(isCoord()&&sinEq.length)m.append(h('div',{class:'mmbox b',style:'margin-bottom:12px'},h('div',null,h('span',null,h('b',null,sinEq.length+' visitas de hoy en adelante'),' se programaron antes del control de equipos y todavía no descuentan.'),
-    h('button',{class:'btn small primary',id:'btn-eqbulk',onclick:()=>confirmBox('¿Asignar equipos a '+sinEq.length+' visitas?','A cada visita se le asignan los equipos según sus mediciones (por ejemplo, 3 dosimetrías = 3 dosímetros). Si algún día quedan más equipos de los que hay, sale en rojo en esta tabla para que lo ajustes.','Asignar',()=>{sinEq.forEach(e=>{e.eq=eqSuggest(e.med)});save();render();
-      const over=new Set();sinEq.forEach(e=>Object.keys(e.eq).forEach(k=>{const cp=eqCap(k,e.d);if(cp!=null&&eqUsed(k,e.d)>cp)over.add(k+e.d)}));toast(over.size?'Equipos asignados. Hay '+over.size+' casillas en rojo para revisar.':'Equipos asignados a '+sinEq.length+' visitas.')})},'Asignar equipos automáticamente'))));
-  const c1=h('div',{class:'card'});const tw=h('div',{style:'overflow-x:auto'});const t=h('table',{class:'eqgrid'});
+    h('button',{class:'btn small primary',id:'btn-eqbulk',onclick:()=>confirmBox('¿Asignar equipos a '+sinEq.length+' visitas?','A cada visita se le asignan los equipos según sus mediciones (por ejemplo, 3 dosimetrías = 3 dosímetros). Si algún día quedan más equipos de los que hay, se marca en rojo para que lo ajustes.','Asignar',()=>{sinEq.forEach(e=>{e.eq=eqSuggest(e.med)});save();render();toast('Equipos asignados a '+sinEq.length+' visitas.')})},'Asignar equipos automáticamente'))));
+
+  // ---- 1. disponibilidad del día, en tarjetas grandes ----
+  const wdays=days.filter(d=>D(d).getDay()<6||events.some(e=>e.d===d&&e.eq));
+  const sel=wdays.includes(UI.eqday)?UI.eqday:(wdays.includes(TODAY)?TODAY:wdays[0]);
+  const ctrl=EQ.inv.filter(it=>!(it.q==null||it.q===''));const libres=EQ.inv.filter(it=>it.q==null||it.q==='');
+  const c1=h('section',{class:'card eqhoy'});
+  const dsel=h('div',{class:'eqdays',role:'tablist','aria-label':'Día'});
+  wdays.forEach(d=>dsel.append(h('button',{role:'tab','aria-selected':d===sel,class:d===TODAY?'hoy':'',onclick:()=>setUI({eqday:d,eqsel:''})},h('b',null,cap(fmt(d,{weekday:'short'})).replace('.','')),h('span',null,D(d).getDate()+(hol[d]?' · fest.':'')))));
+  c1.append(h('div',{class:'eqhead'},h('div',null,h('h3',null,'Equipos disponibles · '+cap(fmt(sel,{weekday:'long',day:'numeric',month:'long'}))),h('p',{class:'sub'},'Higiene Centro. Se descuentan solos al programar una visita. Toca un equipo para ver quién lo tiene.')),dsel));
+  const G=h('div',{class:'eqcards'});
+  ctrl.forEach(it=>{const cp=eqCap(it.k,sel),u=eqUsed(it.k,sel),free=cp==null?null:cp-u;
+    let st,lbl;if(cp===0){st='cero';lbl=it.rot?'No le toca esta semana':'No hay en stock'}else if(u>cp){st='over';lbl=(u-cp)+' de más'}else if(free===0){st='agot';lbl='Agotado'}else if(free<=Math.max(1,Math.floor(cp*.25))&&free<cp){st='poco';lbl='Quedan pocos'}else{st='ok';lbl='Disponible'}
+    const key=it.k+'|'+sel,on=UI.eqsel===key;
+    const strip=h('div',{class:'eqstrip','aria-hidden':'true'});wdays.forEach(d=>{const c=eqCap(it.k,d),uu=eqUsed(it.k,d);const f=c==null?'—':c-uu;const s=c===0?'cero':uu>c?'over':f===0?'agot':f<=Math.max(1,Math.floor(c*.25))&&f<c?'poco':'ok';strip.append(h('span',{class:s+(d===sel?' sel':'')},h('i',null,cap(fmt(d,{weekday:'narrow'}))),String(Math.max(f,0))))});
+    G.append(h('button',{class:'eqcard '+st,'aria-pressed':on,onclick:()=>setUI({eqsel:on?'':key}),'aria-label':it.n+': '+(free==null?'':Math.max(free,0)+' de '+cp+' disponibles, ')+lbl},
+      h('div',{class:'eqtop'},eqIcon(it.k),h('span',{class:'eqn'},it.n.replace('Monitor de vibraciones · ',''))),
+      h('div',{class:'eqnum'},h('b',null,String(Math.max(free??0,0))),h('span',null,'de '+cp)),
+      h('span',{class:'eqst'},lbl),strip))});
+  c1.append(G);
+  if(UI.eqsel){const [k,d]=UI.eqsel.split('|');if(d===sel){const who=eqWho(k,d);const det=h('div',{class:'eqdet'},h('b',null,(EQI(k)?.n||k)+' · '+cap(fmt(d,{weekday:'long',day:'numeric',month:'long'}))));
+    if(!who.length)det.append(h('span',{class:'muted'},'Nadie lo tiene asignado ese día.'));
+    who.forEach(e=>det.append(h('button',{class:'it',onclick:()=>openEdit(e)},h('span',null,h('b',null,e.eq[k]+' · '+(P(e.p)?.n||'—')),' — '+(e.emp||'')+(e.lug?' ('+e.lug+')':'')),e.eqf?h('span',{class:'av-no'},'Forzado: '+e.eqf.motivo):h('span',{class:'muted'},ST[e.s][0]))));
+    c1.append(det)}}
+  if(libres.length){const L=h('div',{class:'eqlibres'},h('span',{class:'muted'},'Sin control de cantidad:'));libres.forEach(it=>{const u=eqUsed(it.k,sel);L.append(h('span',{class:'eqchip'},eqIcon(it.k,'mini'),it.n+(u?' · '+u+' asignado'+(u>1?'s':''):'')))});c1.append(L)}
+  m.append(c1);
+
+  // ---- 2. usabilidad ----
+  const ym=days[0].slice(0,7);
+  const ymAdd=(m,n)=>{const [y,mo]=m.split('-').map(Number);const t=y*12+mo-1+n;return Math.floor(t/12)+'-'+String(t%12+1).padStart(2,'0')};
+  const ymL=m=>mLabel(m)+(m.slice(0,4)!==TODAY.slice(0,4)?' '+m.slice(0,4):'');
+  const evM=events.map(e=>e.d.slice(0,7)).filter(Boolean).sort();const mMin=evM[0]||ym,mMax=evM[evM.length-1]||ym;
+  const allM=[];for(let x=mMin;x<=mMax;x=ymAdd(x,1))allM.push(x);
+  const per=['sem','mes','m3','m6','rng'].includes(UI.usab)?UI.usab:'sem';
+  let mDe,mA;if(per==='mes'){mDe=mA=ym}else if(per==='m3'){mDe=ymAdd(ym,-2);mA=ym}else if(per==='m6'){mDe=ymAdd(ym,-5);mA=ym}else if(per==='rng'){mDe=UI.usd||ymAdd(ym,-2);mA=UI.ush||ym;if(mDe>mA)[mDe,mA]=[mA,mDe]}
+  const pdays=per==='sem'?days.filter(isWork):(()=>{const a=[];let d=mDe+'-01';while(d.slice(0,7)<=mA){if(isWork(d))a.push(d);d=addD(d,1)}return a})();
+  const perTxt=per==='sem'?'esta semana':mDe===mA?'en '+ymL(mDe).toLowerCase():'de '+ymL(mDe).toLowerCase()+' a '+ymL(mA).toLowerCase();
+  const rows=ctrl.map(it=>({it,...eqUsab(it.k,pdays)})).filter(r=>r.pct!=null).sort((a,b)=>b.pct-a.pct);
+  const totU=rows.reduce((s,r)=>s+r.used,0),totC=rows.reduce((s,r)=>s+r.cap,0),gp=totC?Math.round(totU/totC*100):0;
+  const c2=h('section',{class:'card equsab',style:'margin-top:14px'});
+  const tg=h('div',{class:'eqdays',role:'tablist','aria-label':'Periodo'});
+  [['sem','Semana'],['mes',mLabel(ym)],['m3','Últimos 3 meses'],['m6','Últimos 6 meses'],['rng','Elegir meses']].forEach(([k,l])=>tg.append(h('button',{role:'tab','aria-selected':per===k,onclick:()=>setUI({usab:k})},h('b',null,l))));
+  c2.append(h('div',{class:'eqhead'},h('div',null,h('h3',null,'¿Cuánto se usan los equipos?'),h('p',{class:'sub'},'Cuenta cuántas veces salió cada equipo a campo '+perTxt+'. 1 vez = 1 equipo prestado 1 día.')),tg));
+  if(per==='rng'){const mk=(v,key)=>{const s=h('select',{'aria-label':key==='usd'?'Desde':'Hasta'});allM.forEach(x=>{const o=h('option',{value:x},ymL(x));if(x===v)o.selected=true;s.append(o)});s.onchange=()=>setUI({[key]:s.value});return s};
+    c2.append(h('div',{class:'usrng'},h('span',null,'Desde'),mk(mDe,'usd'),h('span',null,'hasta'),mk(mA,'ush')))}
+  if(per!=='sem'&&mDe<mMin)c2.append(h('p',{class:'muted',style:'font-size:.82rem;margin:0 0 10px'},'La agenda tiene datos desde '+ymL(mMin).toLowerCase()+'; los meses anteriores no suman.'));
+  const ring=h('div',{class:'usring',style:'--p:'+gp},h('b',null,gp+'%'),h('span',null,'de uso'));
+  c2.append(h('div',{class:'ussum'},ring,h('p',null,'Entre todos los equipos se hicieron ',h('b',null,totU+' préstamos'),' de ',h('b',null,totC+' posibles'),' '+perTxt+' ('+pdays.length+' días hábiles).',rows.some(r=>r.est)?h('span',{class:'muted',style:'display:block;font-size:.8rem;margin-top:4px'},'Las visitas que aún no tienen equipos asignados se cuentan según sus mediciones.'):null)));
+  const diag=r=>{const pa=r.nd?r.ago/r.nd:0;
+    if(r.used===0)return ['bajo','No se usó','No salió a campo '+perTxt+'.'];
+    if(r.pct>=70||pa>=.3)return ['alto','Hace falta',pa>=.3?'Muchos días se agotó. Vale la pena pedir otro.':'Casi siempre está ocupado.'];
+    if(r.pct>=35)return ['medio','Bien aprovechado','Se usa seguido y casi siempre alcanza.'];
+    return ['bajo','Se usa poco','Casi siempre está libre. Se podría prestar a otra zona.']};
+  const U=h('div',{class:'uslist'});
+  rows.forEach(r=>{const [nv,nl,nt]=diag(r);
+    U.append(h('div',{class:'usrow'},eqIcon(r.it.k),h('div',{class:'usmid'},h('div',{class:'ustit'},h('b',null,r.it.n.replace('Monitor de vibraciones · ','')),h('span',{class:'uschip '+nv},nl)),
+      h('div',{class:'usbar',role:'img','aria-label':r.pct+'% de uso'},h('i',{class:nv,style:'width:'+Math.max(r.pct,2)+'%'})),
+      h('div',{class:'usfacts'},h('span',null,'Salió ',h('b',null,r.used+(r.used===1?' vez':' veces'))),h('span',null,'Días agotado: ',h('b',null,String(r.ago))),h('span',null,'Cantidad: ',h('b',null,String(Math.round(r.tot))))),
+      h('small',{class:'muted'},nt)),
+      h('span',{class:'uspct'},r.pct+'%')))});
+  if(!rows.length)U.append(h('p',{class:'muted'},'No hay equipos con cantidad registrada para este periodo.'));
+  c2.append(U,h('p',{class:'muted',style:'font-size:.78rem;margin:.6rem 0 0'},'El % compara las veces que salió con las veces que pudo salir (cantidad × días hábiles). Datos de la agenda de Higiene Centro.'));
+  m.append(c2);
+
+  // ---- 3. detalles (ocultos) ----
+  const more=(t,sub,body,open)=>{const d=h('details',{class:'card eqmore',style:'margin-top:14px'});if(open)d.open=true;d.append(h('summary',null,h('b',null,t),h('span',{class:'muted'},sub)),body);return d};
+  // tabla detallada de la semana
+  const tw=h('div',{style:'overflow-x:auto'});const t=h('table',{class:'eqgrid'});
   t.append(h('thead',null,h('tr',null,h('th',null,'Equipo'),days.map(d=>h('th',{class:d===TODAY?'today':''},cap(fmt(d,{weekday:'short'})).replace('.',''),h('br'),D(d).getDate()+' '+fmt(d,{month:'short'}).replace('.','')+(hol[d]?' · fest.':''))))));
   const tb=h('tbody');
   EQ.inv.forEach(it=>{const off=+(EQ.off||{})[it.k]||0;
@@ -871,33 +1014,26 @@ function vEquip(m){
     days.forEach(d=>{const cp=eqCap(it.k,d),u=eqUsed(it.k,d);let cls,top,sub;
       if(cp==null){cls='na';top=u?String(u):'—';sub=u?'asignados':'sin control'}
       else{const free=cp-u;cls=u>cp?'over':free===0?'no':free<cp&&free<=Math.max(1,Math.floor(cp*.2))?'low':'ok';top=u>cp?'+'+(u-cp):String(free);sub=u>cp?'de más':cp===0?(it.rot?'no le toca':'no hay'):'libres de '+cp}
-      const key=it.k+'|'+d,sel=UI.eqsel===key;
-      tr.append(h('td',null,h('button',{class:'eqc '+cls,'aria-pressed':sel,'aria-label':it.n+' '+dlong(d)+': '+top+' '+sub,onclick:()=>setUI({eqsel:sel?'':key})},top,h('small',null,sub))))});
+      tr.append(h('td',null,h('button',{class:'eqc '+cls,'aria-label':it.n+' '+dlong(d)+': '+top+' '+sub,onclick:()=>setUI({eqday:d,eqsel:it.k+'|'+d})},top,h('small',null,sub))))});
     tb.append(tr)});
-  t.append(tb);tw.append(t);c1.append(tw);
-  if(UI.eqsel){const [k,d]=UI.eqsel.split('|');if(days.includes(d)){const who=eqWho(k,d);const det=h('div',{class:'eqdet'},h('b',null,(EQI(k)?.n||k)+' · '+cap(fmt(d,{weekday:'long',day:'numeric',month:'long'}))));
-    if(!who.length)det.append(h('span',{class:'muted'},'Nadie lo tiene asignado ese día.'));
-    who.forEach(e=>det.append(h('button',{class:'it',onclick:()=>openEdit(e)},h('span',null,h('b',null,e.eq[k]+' · '+(P(e.p)?.n||'—')),' — '+(e.emp||'')+(e.lug?' ('+e.lug+')':'')),e.eqf?h('span',{class:'av-no'},'Forzado: '+e.eqf.motivo):h('span',{class:'muted'},ST[e.s][0]))));
-    c1.append(det)}}
-  m.append(c1);
+  t.append(tb);tw.append(t);
+  m.append(more('Tabla detallada de la semana','Libres por equipo y por día',tw));
   // rotación sensor MB
-  EQ.inv.filter(x=>x.rot).forEach(it=>{const c=h('div',{class:'card',style:'margin-top:14px'},h('h3',null,'Semanas del '+it.n.toLowerCase()),h('p',{class:'sub'},isCoord()?'Marca las semanas en que el sensor está asignado a Higiene Centro según la rotación nacional. Las demás semanas no se puede programar con él.':'Semanas en que el sensor está asignado a Higiene Centro.'));
-    const W=h('div',{class:'weeks'});let w='2026-09-28';
+  EQ.inv.filter(x=>x.rot).forEach(it=>{const W=h('div',{class:'weeks'});let w='2026-09-28';
     while(w<='2026-12-28'){const ww=w,on=(EQ.rot||[]).includes(ww);const cb=h('input',{type:'checkbox',disabled:!isCoord()});cb.checked=on;
       cb.onchange=()=>{EQ.rot=on?(EQ.rot||[]).filter(x=>x!==ww):(EQ.rot||[]).concat(ww).sort();save();render()};
       W.append(h('label',{class:on?'on':''},cb,D(ww).getDate()+' '+fmt(ww,{month:'short'}).replace('.','')+' – '+D(addD(ww,4)).getDate()+' '+fmt(addD(ww,4),{month:'short'}).replace('.','')));w=addD(w,7)}
-    c.append(W);m.append(c)});
-  // resumen del mes
-  const ym=days[0].slice(0,7);const mdays=[];{let d=ym+'-01';while(d.slice(0,7)===ym){const wd=D(d).getDay();if(wd>0&&wd<6||events.some(e=>e.d===d&&e.eq))mdays.push(d);d=addD(d,1)}}
-  const c2=h('div',{class:'card',style:'margin-top:14px'},h('h3',null,'Uso en '+mLabel(ym).toLowerCase()),h('p',{class:'sub'},'Equipo-días asignados en el mes, días en que se agotó y días con más equipos asignados de los que hay.'));
-  const t2=h('table',{class:'ptab'});t2.append(h('thead',null,h('tr',null,h('th',null,'Equipo'),h('th',null,'Equipo-días'),h('th',null,'Días agotado'),h('th',null,'Días de más'))));const b2=h('tbody');
+    m.append(more('Semanas del '+it.n.toLowerCase(),isCoord()?'Marca las semanas en que está asignado a Higiene Centro':'Semanas asignadas a Higiene Centro',W))});
+  // uso del mes y forzados
+  const mdays=[];{let d=ym+'-01';while(d.slice(0,7)===ym){const wd=D(d).getDay();if(wd>0&&wd<6||events.some(e=>e.d===d&&e.eq))mdays.push(d);d=addD(d,1)}}
+  const box2=h('div');const t2=h('table',{class:'ptab'});t2.append(h('thead',null,h('tr',null,h('th',null,'Equipo'),h('th',null,'Equipo-días'),h('th',null,'Días agotado'),h('th',null,'Días de más'))));const b2=h('tbody');
   EQ.inv.forEach(it=>{let tot=0,ago=0,over=0;mdays.forEach(d=>{const u=eqUsed(it.k,d);tot+=u;const cp=eqCap(it.k,d);if(cp!=null&&u>0){if(u>=cp)ago++;if(u>cp)over++}});b2.append(h('tr',null,h('td',null,it.n),h('td',null,tot||'—'),h('td',null,ago||'—'),h('td',null,over?h('span',{class:'av-no'},over):'—')))});
-  t2.append(b2);c2.append(h('div',{style:'overflow-x:auto'},t2));
+  t2.append(b2);box2.append(h('div',{style:'overflow-x:auto'},t2));
   const forced=events.filter(e=>e.eqf&&e.d.slice(0,7)===ym).sort((a,b)=>a.d<b.d?-1:1);
-  if(forced.length){c2.append(h('h3',{style:'margin:16px 0 6px;font-size:.95rem'},'Visitas con equipos forzados'));const L=h('div',{class:'eqdet',style:'margin-top:0'});forced.forEach(e=>L.append(h('button',{class:'it',onclick:()=>openEdit(e)},h('span',null,h('b',null,dlong(e.d)),' · '+(P(e.p)?.n||'')+' — '+(e.emp||'')),h('span',{class:'av-no'},e.eqf.motivo+' ('+e.eqf.por+')'))));c2.append(L)}
-  m.append(c2);
+  if(forced.length){box2.append(h('h3',{style:'margin:16px 0 6px;font-size:.95rem'},'Visitas con equipos forzados'));const L=h('div',{class:'eqdet',style:'margin-top:0'});forced.forEach(e=>L.append(h('button',{class:'it',onclick:()=>openEdit(e)},h('span',null,h('b',null,dlong(e.d)),' · '+(P(e.p)?.n||'')+' — '+(e.emp||'')),h('span',{class:'av-no'},e.eqf.motivo+' ('+e.eqf.por+')'))));box2.append(L)}
+  m.append(more('Registro de '+mLabel(ym).toLowerCase(),'Equipo-días, días agotado'+(forced.length?' y '+forced.length+' forzados':''),box2));
   // inventario
-  const c3=h('div',{class:'card',style:'margin-top:14px'},h('h3',null,'Inventario de la zona'),h('p',{class:'sub'},isCoord()?'Cantidad total de cada equipo. Si un equipo está en calibración o dañado, súmalo en "fuera de servicio" y deja de contarse. Si dejas la cantidad vacía, el equipo se registra pero no se controla.':'Cantidad total de cada equipo en Higiene Centro.'));
+  const box3=h('div');box3.append(h('p',{class:'sub'},isCoord()?'Si un equipo está en calibración o dañado, súmalo en "fuera de servicio" y deja de contarse. Si dejas la cantidad vacía, el equipo se registra pero no se controla.':'Cantidad total de cada equipo en Higiene Centro.'));
   const t3=h('table',{class:'invt'});t3.append(h('thead',null,h('tr',null,h('th',null,'Equipo'),h('th',null,'Cantidad'),h('th',null,'Fuera de servicio'),h('th',null,'Nota'),isCoord()?h('th',null,''):null)));const b3=h('tbody');
   EQ.inv.forEach(it=>{const ro=!isCoord();
     const nI=h('input',{type:'text',value:it.n,'aria-label':'Nombre del equipo',disabled:ro});nI.onchange=v=>{it.n=v.target.value.trim()||it.n;save();render()};
@@ -905,10 +1041,10 @@ function vEquip(m){
     const oI=h('input',{type:'number',min:0,value:(EQ.off||{})[it.k]||'',placeholder:'0','aria-label':'Fuera de servicio de '+it.n,disabled:ro});oI.onchange=v=>{EQ.off=EQ.off||{};const x=Math.max(0,+v.target.value||0);if(x)EQ.off[it.k]=x;else delete EQ.off[it.k];save();render()};
     const tI=h('input',{type:'text',value:it.nota||'',placeholder:'Ej. compartido, en calibración…','aria-label':'Nota de '+it.n,disabled:ro});tI.onchange=v=>{it.nota=v.target.value.trim();save();render()};
     b3.append(h('tr',null,h('td',null,nI),h('td',null,qI),h('td',null,oI),h('td',null,tI),ro?null:h('td',null,h('button',{class:'btn icon small','aria-label':'Eliminar '+it.n,onclick:()=>confirmBox('¿Eliminar '+it.n+' del inventario?','Las visitas que ya lo tienen asignado lo conservan, pero deja de controlarse.','Eliminar',()=>{EQ.inv=EQ.inv.filter(x=>x!==it);save();render()})},'✕'))))});
-  t3.append(b3);c3.append(h('div',{style:'overflow-x:auto'},t3));
+  t3.append(b3);box3.append(h('div',{style:'overflow-x:auto'},t3));
   if(isCoord()){const ni=h('input',{type:'text',id:'neweq',placeholder:'Nombre del equipo nuevo'});const nq=h('input',{type:'number',min:0,placeholder:'Cantidad',style:'max-width:7rem'});
-    c3.append(h('div',{class:'uadd'},ni,nq,h('button',{class:'btn primary',onclick:()=>{const n=ni.value.trim();if(!n){ni.focus();return}const k='X'+Date.now().toString(36).toUpperCase();EQ.inv.push({k,n,sn:n.toLowerCase(),q:nq.value===''?null:Math.max(0,+nq.value||0)});save();render();toast(n+' agregado al inventario.')}},'+ Agregar equipo')))}
-  m.append(c3);
+    box3.append(h('div',{class:'uadd'},ni,nq,h('button',{class:'btn primary',onclick:()=>{const n=ni.value.trim();if(!n){ni.focus();return}const k='X'+Date.now().toString(36).toUpperCase();EQ.inv.push({k,n,sn:n.toLowerCase(),q:nq.value===''?null:Math.max(0,+nq.value||0)});save();render();toast(n+' agregado al inventario.')}},'+ Agregar equipo')))}
+  m.append(more('Inventario de la zona','Cantidades, fuera de servicio y notas',box3));
 }
 
 // ---------- PEOPLE ----------
