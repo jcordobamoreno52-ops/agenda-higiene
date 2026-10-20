@@ -395,6 +395,8 @@ body.picking .cell.cando .add{opacity:0}
 .weeks{display:flex;flex-wrap:wrap;gap:6px}
 .weeks label{display:inline-flex;gap:5px;align-items:center;border:1px solid var(--line);border-radius:999px;padding:.25rem .65rem;font-size:.82rem;background:var(--surface)}
 .weeks label.on{background:var(--accent-soft);border-color:var(--accent);font-weight:700}
+.solo #main input,.solo #main select,.solo #main textarea,.solo #main .btn.primary,.solo #main .btn.danger,.solo #main .uadd,.solo #btn-eqbulk{pointer-events:none!important;opacity:.55}
+.solo .ev{cursor:pointer}
 .rolechip{font-size:.72rem;font-weight:700;border-radius:999px;padding:.1rem .5rem;background:var(--accent-soft);color:var(--accent);margin-left:6px}
 .rolist{font-size:.84rem;margin:0;padding-left:1.1rem;display:grid;gap:3px}
 @media (max-width:640px){.eqrow{grid-template-columns:minmax(0,1fr) 56px auto}.eqrow .avs{grid-column:1/-1;order:3}}
@@ -436,9 +438,9 @@ const ARLS=['Sura','Positiva','Axa Colpatria','Colmena','Colsanitas','Particular
 const PHYS=['SO','DO','NI','CET','VMB','VCE','ITH'];
 const unitOf=c=>c==='ITH'?' h':'';
 // ---------- roles ----------
-let ROLE='coord',MYP=null,MYNAME='';
+let ROLE='coord',MYP=null,MYNAME='',SOLO=false; // SOLO = visitante: ve todo, no cambia nada
 const isCoord=()=>ROLE==='coord';
-const canEdit=pid=>isCoord()||(!!MYP&&pid===MYP);
+const canEdit=pid=>!SOLO&&(isCoord()||(!!MYP&&pid===MYP));
 let PICK=null,DRAG=null,NOCLICK=0;
 // ---------- equipos (stock fijo de Higiene Centro) ----------
 const EQ_DEF={inv:[
@@ -486,7 +488,7 @@ function load(){
   // active order: keep roster order from seed
 }
 let saveOk=true;
-function save(){if(CLOUD){scheduleSync();return}saveOk=store.set('state',{v:1,profs,events,dis:DIS,tar:TAR,eq:EQ});renderBanner()}
+function save(){if(SOLO){toast('Modo visitante: solo lectura, no se guardan cambios.');setTimeout(()=>location.reload(),900);return}if(CLOUD){scheduleSync();return}saveOk=store.set('state',{v:1,profs,events,dis:DIS,tar:TAR,eq:EQ});renderBanner()}
 let CLOUD=false;
 load();
 const P=id=>profs.find(p=>p.id===id);
@@ -544,7 +546,7 @@ function renderLegend(){
   L.append(lg('--st-p','Programada'),lg('--st-g','En gestión'),lg('--st-c','Cancelada'),lg('--st-pc','Proyectada',';border:1px dashed var(--muted);background:var(--surface)'),lg('--past','Fecha pasada'),lg('--adm','Administrativo'),lg('--aus','Ausencia'));
 }
 function renderBanner(st){const b=$('banner');b.innerHTML='';
-  if(typeof CLOUD!=='undefined'&&CLOUD){if(!ME)return;b.append(h('div',{style:'background:var(--aus-soft);border-color:var(--aus)'},h('span',null,'● Agenda compartida: los cambios se ven en todos los equipos. '+(st==='Guardando…'?'Guardando…':st==='error'?'⚠ Error al guardar':'Todo guardado.')),h('span',{style:'display:flex;gap:8px;align-items:center'},h('span',{class:'muted'},MYNAME||ME.email,h('span',{class:'rolechip'},isCoord()?'Coordinación':'Profesional')),h('button',{class:'btn small',onclick:async()=>{await sb.auth.signOut();location.reload()}},'Salir'))));return}
+  if(typeof CLOUD!=='undefined'&&CLOUD){if(!ME)return;b.append(h('div',{style:'background:var(--aus-soft);border-color:var(--aus)'},h('span',null,'● Agenda compartida: los cambios se ven en todos los equipos. '+(st==='Guardando…'?'Guardando…':st==='error'?'⚠ Error al guardar':'Todo guardado.')),h('span',{style:'display:flex;gap:8px;align-items:center'},h('span',{class:'muted'},MYNAME||ME.email,h('span',{class:'rolechip'},SOLO?'Visitante · solo lectura':isCoord()?'Coordinación':'Profesional')),h('button',{class:'btn small',onclick:async()=>{await sb.auth.signOut();location.reload()}},'Salir'))));return}
   b.append(h('div',null,h('span',null,saveOk?'Versión de prueba: los cambios se guardan solo en este dispositivo. Para que todos vean lo mismo hay que conectarlo a una base de datos.':'Este navegador no deja guardar: los cambios se pierden al recargar.'),h('button',{class:'btn small',onclick:()=>confirmBox('¿Volver a los datos del Excel?','Se borran los cambios hechos en este dispositivo.','Restablecer',()=>{store.del('state');load();render();toast('Agenda restablecida.')})},'Restablecer datos')))}
 function navBar(title,prev,next,todayFn,sub,pick){const n=$('nav');n.innerHTML='';
   const tb=h('button',{class:'ttl',id:'ttl','aria-haspopup':'true',title:'Ir a otro mes',onclick:e=>{e.stopPropagation();pick&&openPicker(tb,pick)}},h('span',{class:'tm'},title),sub?h('span',{class:'ts'},sub):null,pick?h('span',{class:'tc','aria-hidden':'true'},'▾'):null);
@@ -667,7 +669,7 @@ function moveEvent(id,p,d){const e=events.find(x=>x.id===id);if(!e)return;if(e.p
   const go=()=>{if(conf.length)eqBlock(conf,w=>apply(w));else apply(null)};
   if(p!==e.p)confirmBox('¿Pasarle esta visita a '+(P(p)?.n||'otro profesional')+'?',(e.emp||'La actividad')+' · '+dlong(d)+'. '+(isCoord()?'':'Después solo '+(P(p)?.n||'esa persona')+' o la coordinación la pueden cambiar.'),'Pasar visita',go);else go()}
 const TOUCH=(()=>{try{return matchMedia('(pointer:coarse)').matches||('ontouchstart' in window)}catch(x){return false}})();
-function makeMovable(el,e){el.classList.add('movable');if(!TOUCH)el.draggable=true;
+function makeMovable(el,e){if(SOLO)return;el.classList.add('movable');if(!TOUCH)el.draggable=true;
   el.addEventListener('dragstart',ev=>{DRAG=e.id;try{ev.dataTransfer.setData('text/plain',e.id);ev.dataTransfer.effectAllowed='move'}catch(x){}setTimeout(()=>el.classList.add('dragging'),0)});
   el.addEventListener('dragend',()=>{DRAG=null;el.classList.remove('dragging');document.querySelectorAll('.cell.dropok').forEach(x=>x.classList.remove('dropok'))});
   let t=null,sx=0,sy=0;
@@ -1065,25 +1067,27 @@ function vPeople(m){
   m.append(addF);
   const off=profs.filter(p=>!p.a);
   if(off.length){m.append(h('h3',{style:'margin:22px 0 8px;font-size:1rem'},'Retirados ('+off.length+')'));const O=h('div',{class:'plist'});off.forEach(p=>O.append(h('div',{class:'prow off'},h('span',{class:'av',style:'background:var(--muted)'},ini(p.n)),h('span',null,p.n),h('button',{class:'btn small',onclick:()=>{p.a=true;save();render();toast(p.n+' reactivado.')}},'Reactivar'))));m.append(O)}
-  const cu=h('div',{class:'card',style:'margin-top:22px;max-width:760px'},h('h3',null,'Usuarios y permisos'),h('p',{class:'sub'},'Coordinación: ve todo (Carga, Proyección, Profesionales), edita todo y puede forzar equipos. Profesional: ve la agenda y los equipos, y solo programa o edita sus propias actividades. No ve precios ni Cora.'));
+  const cu=h('div',{class:'card',style:'margin-top:22px;max-width:760px'},h('h3',null,'Usuarios y permisos'),h('p',{class:'sub'},'Coordinación: ve todo (Carga, Proyección, Profesionales), edita todo y puede forzar equipos. Visitante: ve todas las pestañas igual que coordinación, pero no puede cambiar nada. Profesional: ve la agenda y los equipos, y solo programa o edita sus propias actividades. No ve precios ni Cora.'));
   m.append(cu);if(!CLOUD){cu.append(h('p',{class:'muted',style:'margin:0'},'Se activa cuando la agenda está conectada a la base de datos.'));return}
+  if(SOLO){cu.append(h('p',{class:'muted',style:'margin:0'},'Estás como visitante: puedes ver la agenda, pero no administrar usuarios.'));return}
   const ub=h('div');cu.append(ub);drawUsers(ub);
 }
 async function drawUsers(box){box.innerHTML='';box.append(h('p',{class:'muted',style:'margin:0'},'Cargando usuarios…'));
   const {data,error}=await sb.from('perfiles').select('email,nombre,rol,prof_id').order('rol').order('email');box.innerHTML='';
   if(error){box.append(h('p',{class:'av-no',style:'margin:0'},'No se pudo leer la tabla de usuarios. Falta correr el archivo supabase-roles.sql en Supabase.'));return}
   const profSel=(v,on)=>{const s=h('select',{'aria-label':'Profesional en la agenda',onchange:x=>on(x.target.value||null)});s.append(h('option',{value:''},'— Ninguno —'));profs.filter(p=>p.a||p.id===v).forEach(p=>s.append(h('option',{value:p.id,selected:p.id===v},p.n)));return s};
-  const rolSel=(v,on)=>{const s=h('select',{'aria-label':'Rol',onchange:x=>on(x.target.value)});[['profesional','Profesional'],['coordinador','Coordinación']].forEach(([k,l])=>s.append(h('option',{value:k,selected:k===v},l)));return s};
+  const rolSel=(v,on)=>{const s=h('select',{'aria-label':'Rol',onchange:x=>on(x.target.value)});[['profesional','Profesional'],['coordinador','Coordinación'],['visitante','Visitante (solo ver)']].forEach(([k,l])=>s.append(h('option',{value:k,selected:k===v},l)));return s};
   const upd=async(email,patch)=>{const {error}=await sb.from('perfiles').update(patch).eq('email',email);toast(error?'No se pudo guardar: '+error.message:'Permisos actualizados.');if(error)drawUsers(box)};
   const me=(ME?.email||'').toLowerCase();
   const t=h('table',{class:'invt'});t.append(h('thead',null,h('tr',null,h('th',null,'Correo'),h('th',null,'Rol'),h('th',null,'Es el profesional'),h('th',null,''))));const tb=h('tbody');
   (data||[]).forEach(u=>{const mine=u.email===me;tb.append(h('tr',null,h('td',{style:'word-break:break-all'},u.email,mine?h('span',{class:'rolechip'},'tú'):null),
-    h('td',null,mine?(u.rol==='coordinador'?'Coordinación':'Profesional'):rolSel(u.rol,v=>upd(u.email,{rol:v}))),
+    h('td',null,mine?(u.rol==='coordinador'?'Coordinación':u.rol==='visitante'?'Visitante':'Profesional'):rolSel(u.rol,v=>upd(u.email,{rol:v}))),
     h('td',null,profSel(u.prof_id,v=>upd(u.email,{prof_id:v,nombre:v?(P(v)?.n||u.nombre):u.nombre}))),
     h('td',null,mine?null:h('button',{class:'btn small danger',onclick:()=>confirmBox('¿Quitar el acceso a '+u.email+'?','Ya no podrá ver la agenda. Su usuario sigue existiendo en Supabase, pero sin permisos.','Quitar acceso',async()=>{const {error}=await sb.from('perfiles').delete().eq('email',u.email);toast(error?'No se pudo quitar el acceso.':'Acceso quitado.');drawUsers(box)})},'Quitar'))))});
   t.append(tb);box.append(h('div',{style:'overflow-x:auto'},t));
   const nr={rol:'profesional',prof_id:null};const em=h('input',{type:'email',id:'u-email',placeholder:'correo@ejemplo.com','aria-label':'Correo del nuevo usuario'});
   box.append(h('div',{class:'uadd'},em,rolSel('profesional',v=>nr.rol=v),profSel(null,v=>nr.prof_id=v),h('button',{class:'btn primary',onclick:async()=>{const email=em.value.trim().toLowerCase();if(!/^\S+@\S+\.\S+$/.test(email)){toast('Escribe un correo válido.');em.focus();return}
+    if(nr.rol!=='profesional')nr.prof_id=null;
     if(nr.rol==='profesional'&&!nr.prof_id){toast('Elige qué profesional de la agenda es.');return}
     const {error}=await sb.from('perfiles').upsert({email,rol:nr.rol,prof_id:nr.prof_id,nombre:nr.prof_id?(P(nr.prof_id)?.n||email):email});toast(error?'No se pudo dar acceso: '+error.message:'Acceso dado. Crea su usuario en Supabase con este mismo correo.');drawUsers(box)}},'Dar acceso')));
   box.append(h('p',{class:'muted',style:'font-size:.8rem;margin:.6rem 0 0'},'Paso 1: crea el usuario (correo y contraseña) en Supabase → Authentication → Add user. Paso 2: dale acceso aquí con el mismo correo. Quien tenga usuario pero no esté en esta lista no ve nada.'))}
@@ -1094,7 +1098,7 @@ function confirmBox(t,msg,ok,fn){const r=$('modalroot');r.innerHTML='';const clo
 function openEdit(e,defaults){
   const isNew=!e;
   if(isNew&&!isCoord()){if(!MYP){toast('Tu usuario no está ligado a un profesional. Pídeselo a la coordinación.');return}defaults=Object.assign({},defaults||{},{p:MYP})}
-  const ro=!isNew&&!canEdit(e.p);
+  const ro=SOLO||(!isNew&&!canEdit(e.p));
   const f=e?JSON.parse(JSON.stringify(e)):Object.assign({id:'n'+Date.now(),p:UI.fp||profs.find(p=>p.a)?.id,d:TODAY,k:'vis',s:'G',emp:'',lug:'',h:'',n:'',med:[[1,'NI','','']]},defaults||{});
   if(!f.med)f.med=[];
   if(isNew)f._auto=true;
@@ -1465,7 +1469,7 @@ function loginScreen(msg){const m=$('main');m.innerHTML='';$('nav').innerHTML=''
   m.append(f);setTimeout(()=>em.focus(),50)}
 async function loadRole(){const {data,error}=await sb.from('perfiles').select('email,nombre,rol,prof_id').eq('email',(ME?.email||'').toLowerCase()).maybeSingle();
   if(error){if(error.code==='PGRST205'||error.code==='42P01'||/perfiles/i.test(error.message||'')){ROLE='coord';MYP=null;MYNAME='';return true}throw error}
-  if(!data)return false;ROLE=data.rol==='coordinador'?'coord':'prof';MYP=data.prof_id||null;MYNAME=data.nombre||'';return true}
+  if(!data)return false;SOLO=data.rol==='visitante';ROLE=(data.rol==='coordinador'||SOLO)?'coord':'prof';document.body.classList.toggle('solo',SOLO);MYP=data.prof_id||null;MYNAME=data.nombre||'';return true}
 function noAccess(){$('nav').innerHTML='';$('views').innerHTML='';$('legend').innerHTML='';const m=$('main');m.innerHTML='';
   m.append(h('div',{class:'login'},h('h2',null,'Tu usuario aún no tiene permisos'),h('p',{class:'muted',style:'margin:0'},'Entraste como '+(ME?.email||'')+', pero la coordinación todavía no te ha dado acceso a la agenda. Pídeselo y vuelve a entrar.'),h('button',{class:'btn primary',onclick:async()=>{await sb.auth.signOut();location.reload()}},'Salir')))}
 async function startCloud(){renderBanner();try{if(!await loadRole()){renderBanner();noAccess();return}renderViews();renderBanner();if(await cloudLoad()){subscribe();render();renderBanner();autoCopy()}}catch(e){console.error(e);$('main').innerHTML='';$('main').append(h('div',{class:'empty'},'No se pudo leer la base de datos. Revisa que las tablas estén creadas (archivo supabase.sql).'))}}
